@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-//                   
+//
 // Author:           Paige Champagne
 // Email:            paigechamp@gmail.com
 // Label:            Program 2
@@ -10,12 +10,12 @@
 // Description:
 //       This program reads in lines from a file and converts each line into a
 //          sequence and a summation based on the data
-//       
+//
 // Files:            SeqSum1.dat (given input file)
 //                      SeqSum1Out.dat (output file for SeqSum1.dat)
 //                   input.txt   (input file I created)
-//                      output.dat  (output file for input.txt)  
-// 
+//                      output.dat  (output file for input.txt)
+//
 //////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
@@ -60,7 +60,7 @@ void openFiles(ifstream &infile, ofstream &outfile);
  *      - int* seq
  *          - the finished sequence
  */
-int* geometric(int seq[], int numterms, int a, int r);
+int *geometric(int seq[], int numterms, int a, int r);
 
 /**
  * Public: arithmetic
@@ -82,7 +82,7 @@ int* geometric(int seq[], int numterms, int a, int r);
  *      - int* seq
  *          - the finished sequence
  */
-int* arithmetic(int seq[], int numterms, int a, int r);
+int *arithmetic(int seq[], int numterms, int a, int r);
 
 /**
  * Public: sum
@@ -124,58 +124,65 @@ int sum(int seq[], int lLimit, int uLimit);
  * Returns:
  *      - void
  */
-void print(int seq[], int numterms, int s, char type, 
-            ofstream &outfile, int lLimit, int uLimit);
-
-
+void print(int seq[], int numterms, int s, char type,
+           ofstream &outfile, int lLimit, int uLimit);
 
 int main()
 {
-    ifstream infile;     //infile variable for openFiles to use
-    ofstream outfile;    //outfile variable for openFiles to use
-    char type; //type of summation, 1st item read in from line
-    int a; //starting number, 2nd item read in from line
-    int r; //number to be added/multiplied with a, 3rd item read in from line
-    int numterms; //number of terms to be generated, 4th item read in from line
-    int lLimit; //lower limit for summation, 5th item read in from line
-    int uLimit; //upper limit for summation, 6th item
-    int *sequence; //pointer int for an array we will dynamically size later
-    int summ; //the value of the summation
+    ifstream infile;  //infile variable for openFiles to use
+    ofstream outfile; //outfile variable for openFiles to use
+    char type;        //type of summation, 1st item read in from line
+    int a;            //starting number, 2nd item read in from line
+    int r;            //number to be added/multiplied with a, 3rd item read in from line
+    int numterms;     //number of terms to be generated, 4th item read in from line
+    int lLimit;       //lower limit for summation, 5th item read in from line
+    int uLimit;       //upper limit for summation, 6th item
+    int *sequence;    //pointer int for an array we will dynamically size later
+    int summ;         //the value of the summation
 
     openFiles(infile, outfile); //call openFiles
-    outfile << "Paige Champagne\n" << endl;
+    outfile << "Paige Champagne\n"
+            << endl;
 
-    if(infile){
-     while(!infile.eof()){
-        infile >> type >> a >> r >> numterms >> lLimit >> uLimit;
-        if((1 <= numterms <= 40) & (1 <= lLimit <= 40) & (1 <= uLimit <= 40)){
-        sequence = new int[numterms];
-        if(type == 'A'){
-            arithmetic(sequence, numterms, a, r);
-        } else if(type == 'G'){
-            geometric(sequence, numterms, a, r);
+    if (infile)
+    {
+        while (!infile.eof())
+        {
+            infile >> type >> a >> r >> numterms >> lLimit >> uLimit;
+            if ((1 <= numterms <= 40) & (1 <= lLimit <= 40) & (1 <= uLimit <= 40))
+            {
+                sequence = new int[numterms];
+                if (type == 'A')
+                {
+                    arithmetic(sequence, numterms, a, r);
+                }
+                else if (type == 'G')
+                {
+                    geometric(sequence, numterms, a, r);
+                }
+
+                summ = sum(sequence, lLimit, uLimit);
+
+                print(sequence, numterms, summ, type, outfile, lLimit, uLimit);
+            }
+            else
+            {
+                cout << "Error in data\n";
+            }
         }
-        
-        summ = sum(sequence, lLimit, uLimit);
-        
-        print(sequence, numterms, summ, type, outfile, lLimit, uLimit);
-        }else{
-            cout << "Error in data\n";
-        }
-        }
-    }else{
+    }
+    else
+    {
         cout << "File not found\n";
     }
 
-
-
-return 0;
+    return 0;
 }
 
 void openFiles(ifstream &infile, ofstream &outfile)
 {
-    char inFileName[40];   //essentially string to hold name user gives
-    char outFileName[40];  //essentially string to hold name user gives
+    char inFileName[40];  //essentially string to hold name user gives
+    char outFileName[40]; //essentially string to hold name user gives
 
     cout << "Enter the input file name: ";
     cin >> inFileName;
@@ -188,50 +195,68 @@ void openFiles(ifstream &infile, ofstream &outfile)
     outfile.open(outFileName); //open output file
 }
 
-int* geometric(int seq[], int numterms, int a, int r){
-    for(int i = 0; i < numterms; i++){
-       
-       if(i != 0){
-        seq[i] = seq[i-1] * r;
-       }else if(i == 0){
-        seq[i] = a;
-       } 
+int *geometric(int seq[], int numterms, int a, int r)
+{
+    for (int i = 0; i < numterms; i++)
+    {
+
+        if (i != 0)
+        {
+            seq[i] = seq[i - 1] * r;
+        }
+        else if (i == 0)
+        {
+            seq[i] = a;
+        }
     }
-return seq;
+    return seq;
 }
 
-int* arithmetic(int seq[], int numterms, int a, int r){
-    for(int i = 0; i < numterms; i++){
-       
-       if(i != 0){
-        seq[i] = seq[i-1] + r;
-       }else if(i == 0){
-        seq[i] = a;
-       } 
+int *arithmetic(int seq[], int numterms, int a, int r)
+{
+    for (int i = 0; i < numterms; i++)
+    {
+
+        if (i != 0)
+        {
+            seq[i] = seq[i - 1] + r;
+        }
+        else if (i == 0)
+        {
+            seq[i] = a;
+        }
     }
-return seq;
+    return seq;
 }
 
-int sum(int seq[],  int lLimit, int uLimit){
-   int summ = 0;
-    for(int i = lLimit-1; i < uLimit; i++){
+int sum(int seq[], int lLimit, int uLimit)
+{
+    int summ = 0;
+    for (int i = lLimit - 1; i < uLimit; i++)
+    {
         summ += seq[i];
     }
-return summ;
+    return summ;
 }
 
-void print(int seq[], int numterms, int s, char type, 
-            ofstream &outfile, int lLimit, int uLimit){
-    if(type == 'A'){
+void print(int seq[], int numterms, int s, char type,
+           ofstream &outfile, int lLimit, int uLimit)
+{
+    if (type == 'A')
+    {
         outfile << "Arithmetic sequence: ";
-    } else if(type == 'G'){
+    }
+    else if (type == 'G')
+    {
         outfile << "Geometric sequence: ";
     }
 
-    for(int i = 0; i < numterms; i++){
+    for (int i = 0; i < numterms; i++)
+    {
         outfile << seq[i] << "    ";
     }
 
-    outfile << "\nSum of sequence from " << lLimit << " to " << uLimit 
-            << " term is " << s << endl <<endl;
+    outfile << "\nSum of sequence from " << lLimit << " to " << uLimit
+            << " term is " << s << endl
+            << endl;
 }
