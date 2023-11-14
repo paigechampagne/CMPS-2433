@@ -1,1 +1,1 @@
-# CMPS-2433
+# CMPS-2433 : Discrete Mathematics 
